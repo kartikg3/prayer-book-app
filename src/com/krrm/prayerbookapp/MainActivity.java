@@ -1,4 +1,6 @@
-package com.example.prayerbookapp;
+package com.krrm.prayerbookapp;
+
+import com.example.prayerbookapp.R;
 
 import android.os.Bundle;
 import android.app.Activity;
