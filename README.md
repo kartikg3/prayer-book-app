@@ -1,4 +1,4 @@
 prayer-book-app
 ===============
 
-Prayer Book app for Android
+Prayer Book app for Android.
