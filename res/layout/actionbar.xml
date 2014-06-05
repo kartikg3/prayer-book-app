@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_width="fill_parent"
+    android:layout_height="45dip"
+    android:orientation="horizontal" >
+
+	<ImageView
+	    android:layout_width="37dp"
+	    android:layout_height="40dp"
+	    android:layout_gravity="center_vertical"
+	    android:src="@drawable/actionbar_icon" />
+	
+	<EditText
+	    android:id="@+id/action_address_bar"
+	    android:layout_width="250dp"	    
+	    android:layout_height="40sp"
+	    android:layout_marginLeft="15dp"
+	    android:layout_marginTop="2dp"
+	    android:layout_gravity="center_vertical"
+	    android:hint="@string/search_hint"
+	    android:singleLine="true"
+	    android:imeOptions="actionSearch"
+	    android:textSize="15sp"
+	    android:inputType="text"
+	    android:drawableRight="@drawable/search_icon_32x32"
+	    ></EditText>
+    
+</LinearLayout>

@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">prayerbookapp</string>
+    <string name="app_name">Prayer Book</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="home_title_line01">The Infant Jesus</string>
+    <string name="home_title_line02">\u00A0Golden Book of Prayers</string>
+    <string name="search_hint">e.g. Job, family etc.</string>
 
 </resources>

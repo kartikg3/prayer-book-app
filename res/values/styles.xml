@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -16,5 +16,11 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="WindowTitleBackground">     
+        <item name="android:background">@color/titlebackgroundcolor</item>                   
+    </style>
+    
+    <color name="clr_title_gold">#F4C91C</color>
 
 </resources>

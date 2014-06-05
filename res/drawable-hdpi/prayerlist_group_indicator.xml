@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<item 
+	    android:drawable="@drawable/plus_yellow_01"
+	    android:state_empty="true"
+	    ></item>
+	<item 
+	    android:drawable="@drawable/minus_yellow_01"
+	    android:state_expanded="true"
+	    ></item>
+	<item 
+	    android:drawable="@drawable/plus_yellow_01"
+	    ></item>
+
+</selector>
