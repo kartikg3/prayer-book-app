@@ -45,7 +45,7 @@
     <ExpandableListView
         android:id="@+id/exlvHomeListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#00000000"
         android:divider="#00000000"
         android:alpha="0.85"

@@ -3,7 +3,7 @@
     
     <style name="customTheme" parent="android:Theme"> 
         <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>   
-        <item name="android:windowTitleSize">45dip</item>
+        <item name="android:windowTitleSize">48dip</item>
     </style> 
     
 </resources>

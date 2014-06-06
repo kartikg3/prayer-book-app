@@ -88,16 +88,19 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
+		
+		View row = convertView;
 
-		TextView tvChild = new TextView(context);
+		if (row == null) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			row = inflater.inflate(R.layout.row_prayer_title_list, parent, false);
+		}
+		
+		TextView tvChild = (TextView) row.findViewById(R.id.tvPrayerTitle);
 		
 		tvChild.setText(childList[groupPosition][childPosition]);
-		tvChild.setTextSize(18);
-		tvChild.setPadding(80, 45, 0, 45);
-		tvChild.setTextColor(Color.parseColor("#111111"));
-		tvChild.setBackgroundColor(Color.parseColor("#EEEEEE"));
 		
-		return tvChild;
+		return row;
 	}
 
 	@Override
@@ -131,7 +134,7 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 
 		if (row == null) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = inflater.inflate(R.layout.row_prayer_list, parent, false);
+			row = inflater.inflate(R.layout.row_category_list, parent, false);
 		}
 		
 		TextView tvGroup = (TextView) row.findViewById(R.id.tvPrayerListTitle);

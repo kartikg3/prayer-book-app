@@ -2,4 +2,5 @@
 <resources>   
     <color name="titlebackgroundcolor">#E8E9EA</color>
     <color name="titletextcolor">#555555</color>
+    <color name="actionbar_color">#dfe6f5</color>
 </resources>

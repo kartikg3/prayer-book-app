@@ -21,6 +21,30 @@
         <item name="android:background">@color/titlebackgroundcolor</item>                   
     </style>
     
+    <style name="CustomTheme01" parent="@style/Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/CustomActionbarTheme01</item>
+	    <item name="android:actionBarWidgetTheme">@style/Theme.stylingactionbar.widget</item>
+	    <item name="android:actionOverflowButtonStyle">@style/MyCustomTheme.OverFlow</item>
+    </style>
+    
+    <style name="CustomActionbarTheme01" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:displayOptions">showHome</item>
+        <item name="android:background">@drawable/ab_solid_example</item>
+    </style>
+    
+    <style name="Theme.stylingactionbar.widget" parent="@android:style/Theme.Holo">
+    	<item name="android:popupMenuStyle">@style/PopupMenu</item>
+    	<item name="android:textColor">#333333</item>    	
+	</style>
+    
+    <style name="PopupMenu" parent="@android:style/Widget.Holo.ListPopupWindow">
+    	<item name="android:popupBackground">@color/actionbar_color</item>    
+	</style>
+	
+    <style name="MyCustomTheme.OverFlow" parent="@android:style/Widget.ActionButton.Overflow">
+	    <item name="android:src">@drawable/overflow_icon</item>
+	</style>
+	
     <color name="clr_title_gold">#F4C91C</color>
 
 </resources>
