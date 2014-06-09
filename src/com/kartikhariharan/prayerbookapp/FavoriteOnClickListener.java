@@ -26,10 +26,34 @@ public class FavoriteOnClickListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (prayer.isFavoriteState()) {
+			
+			// Toggle favorite state on OFF
 			prayer.setFavoriteState(false);
 			
+			// Untag all the prayers in prayerList with this ID as Favorite
+			int prayer_id = prayer.getId();
+			for (int i = 0 ; i < prayerList.size() ; i++) {
+				for (int j = 0 ; j < prayerList.get(i).size() ; j++) {
+					if (prayerList.get(i).get(j).getId() == prayer_id) {
+						prayerList.get(i).get(j).setFavoriteState(false);
+					}
+				}
+			}
+			
 		} else {
+			
+			// Toggle favorite state on ON
 			prayer.setFavoriteState(true);
+			
+			// Tag all the prayers in prayerList with this ID as Favorite
+			int prayer_id = prayer.getId();
+			for (int i = 0 ; i < prayerList.size() ; i++) {
+				for (int j = 0 ; j < prayerList.get(i).size() ; j++) {
+					if (prayerList.get(i).get(j).getId() == prayer_id) {
+						prayerList.get(i).get(j).setFavoriteState(true);
+					}
+				}
+			}		
 		}
 		
 		plAdapter.notifyDataSetChanged();

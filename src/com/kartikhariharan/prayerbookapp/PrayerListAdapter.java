@@ -89,16 +89,7 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 			
 			ImageButton indicator = (ImageButton) row.findViewById(R.id.ivPrayerListIndicator);
 			
-			indicator.setOnClickListener(new PrayerDetailExpandOnClickListener(groupPosition, childPosition) {
-
-				@Override
-				public void onClick(View v) {
-					
-					testFunction(groupPosition, childPosition);
-					
-				}
-				
-			});
+			indicator.setOnClickListener(new PrayerDetailExpandOnClickListener(context, this, prayerList, prayer, groupPosition, childPosition) {});
 			
 			if (indicator != null) {
 				indicator.setBackgroundResource(R.drawable.collapse_blue_01);
@@ -248,6 +239,17 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 			
 			clickedPrayer.setExpandedState(true);
 			
+		}
+		
+		// Collapse all other prayers
+		for (int i = 0 ; i < prayerList.size() ; i++) {
+			for (int j = 0 ; j < prayerList.get(i).size() ; j++) {
+				if (i == groupPosition && j == childPosition) {
+					continue;
+				} else {
+					prayerList.get(i).get(j).setExpandedState(false);
+				}
+			}
 		}
 		
 	}
