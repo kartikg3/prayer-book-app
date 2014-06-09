@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <item android:state_pressed="true"
+          android:drawable="@drawable/minus_blue_01_pressed" /> <!-- pressed -->
+          
+    <item android:state_focused="true"
+          android:drawable="@drawable/minus_blue_01" /> <!-- focused -->
+          
+    <item android:drawable="@drawable/minus_blue_01" /> <!-- default -->
+    
+</selector>

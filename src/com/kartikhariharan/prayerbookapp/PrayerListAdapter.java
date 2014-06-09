@@ -1,13 +1,21 @@
 package com.kartikhariharan.prayerbookapp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,61 +24,14 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 	private Context context;
 	private int lastExpandedGroupPosition;
 	
-	String[] parentList = {
-			"Daily Prayers",
-			"Family Prayers",
-			"Motivation Prayers",
-			"Novena Prayers",
-			"My Favourites"
-		};
+	private List<List<Prayer>> prayerList;
+	private List<Category> categoryList;
 	
-	String[][] childList = {
-			
-			{
-				"Our Father",
-				"Hail Mary",
-				"Apostles Creed",
-				"Morning Prayer",
-				"Night Prayer",
-				"While Travelling"
-			},
-			{
-				"Our Father",
-				"Hail Mary",
-				"Apostles Creed",
-				"Morning Prayer",
-				"Night Prayer",
-				"While Travelling"
-			},
-			{
-				"Our Father",
-				"Hail Mary",
-				"Apostles Creed",
-				"Morning Prayer",
-				"Night Prayer",
-				"While Travelling"
-			},
-			{
-				"Our Father",
-				"Hail Mary",
-				"Apostles Creed",
-				"Morning Prayer",
-				"Night Prayer",
-				"While Travelling"
-			},
-			{
-				"Our Father",
-				"Hail Mary",
-				"Apostles Creed",
-				"Morning Prayer",
-				"Night Prayer",
-				"While Travelling"
-			}
-	};
-	
-	public PrayerListAdapter(Context context) {
+	public PrayerListAdapter(Context context, List<Category> categoryList, List<List<Prayer>> prayerList) {
 		this.context = context;
 		this.lastExpandedGroupPosition = -1;
+		this.prayerList = prayerList;
+		this.categoryList = categoryList;
 	}
 
 	@Override
@@ -89,35 +50,101 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 	public View getChildView(int groupPosition, int childPosition,
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		
-		View row = convertView;
+		View row = null;
+		
+		Prayer prayer = prayerList.get(groupPosition).get(childPosition);
+		
+		if (!prayer.isExpandedState()) {
+		
+			if (row == null) {
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				row = inflater.inflate(R.layout.row_prayer_title_list, parent, false);
+			}
+			
+			TextView tvChild = (TextView) row.findViewById(R.id.tvPrayerTitle);
+			
+			//tvChild.setText(childList[groupPosition][childPosition]);
+			tvChild.setText(prayer.getTitle());
+			
+			ImageView indicator = (ImageView) row.findViewById(R.id.ivPrayerListIndicator);
+			
+			if (indicator != null) {				
+				indicator.setImageResource(R.drawable.plus_blue_01);
+			}
+		
+		} else {
+			
+			if (row == null) {
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				row = inflater.inflate(R.layout.row_prayer_detail_list, parent, false);
+			}
+			
+			TextView tvChild = (TextView) row.findViewById(R.id.tvPrayerTitle);
+			
+			//tvChild.setText(childList[groupPosition][childPosition]);
+			tvChild.setText(prayer.getTitle());
+			
+			TextView tvContent = (TextView) row.findViewById(R.id.tvPrayerContent);
+			tvContent.setText(prayer.getContent());
+			
+			ImageButton indicator = (ImageButton) row.findViewById(R.id.ivPrayerListIndicator);
+			
+			indicator.setOnClickListener(new PrayerDetailExpandOnClickListener(groupPosition, childPosition) {
 
-		if (row == null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = inflater.inflate(R.layout.row_prayer_title_list, parent, false);
+				@Override
+				public void onClick(View v) {
+					
+					testFunction(groupPosition, childPosition);
+					
+				}
+				
+			});
+			
+			if (indicator != null) {
+				indicator.setBackgroundResource(R.drawable.collapse_blue_01);
+			}
+			
+			ImageButton favoritesButton = (ImageButton) row.findViewById(R.id.btnFavorite);
+			if (prayer.isFavoriteState()) {
+				favoritesButton.setBackgroundResource(R.drawable.star_yellow_01);
+			} else {
+				favoritesButton.setBackgroundResource(R.drawable.star_gray_01);
+			}
+			
+			favoritesButton.setOnClickListener(new FavoriteOnClickListener(context, this, prayerList, prayer) {});
+			
+			ImageButton shareButton = (ImageButton) row.findViewById(R.id.btnShare);
+			
+			String promoString = "- Sent via PrayerBookApp";
+			String textToShare = String.format("%s\n\n%s\n\n%s", prayer.getTitle(), prayer.getContent(), promoString);
+			
+			shareButton.setOnClickListener(new ShareOnClickListener(context, textToShare) {
+				
+			});
+			
 		}
-		
-		TextView tvChild = (TextView) row.findViewById(R.id.tvPrayerTitle);
-		
-		tvChild.setText(childList[groupPosition][childPosition]);
 		
 		return row;
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition) {		
-		return childList[groupPosition].length;
+		//return childList[groupPosition].length;
+		return prayerList.get(groupPosition).size();
 	}
 
 	@Override
 	public Object getGroup(int groupPosition) {
 		
-		return parentList[groupPosition];
+		//return parentList[groupPosition];
+		return categoryList.get(groupPosition).getName();
 	}
 
 	@Override
 	public int getGroupCount() {
 		
-		return parentList.length;
+		//return parentList.length;
+		return categoryList.size();
 	}
 
 	@Override
@@ -130,26 +157,54 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 	public View getGroupView(int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		
-		View row = convertView;
-
-		if (row == null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			row = inflater.inflate(R.layout.row_category_list, parent, false);
-		}
-		
-		TextView tvGroup = (TextView) row.findViewById(R.id.tvPrayerListTitle);
-		
-		tvGroup.setText(parentList[groupPosition]);
-		
-		ImageView indicator = (ImageView) row.findViewById(R.id.ivPrayerListGroupIndicator);
-		
-		if (isExpanded) {
-			indicator.setImageResource(R.drawable.minus_yellow_01);
+		View row = null;
+		TextView tvTitleLine02;
+		Typeface font;
+		if (groupPosition == 0) {
+			// Styles for the header group
+			
+			row = null;
+			
+			//if (row == null) {
+			if (row == null) {
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				row = inflater.inflate(R.layout.row_header, parent, false);
+			}	
+			
+			tvTitleLine02 = (TextView) row.findViewById(R.id.tvTitleLine02);
+			font = Typeface.createFromAsset(((Activity) this.context).getAssets(), "font/p22-corinthia.ttf");
+			tvTitleLine02.setTypeface(font);
+			
+			return row;
+			
 		} else {
-			indicator.setImageResource(R.drawable.plus_yellow_01);
+			
+			 //row = convertView;
+			
+			if (row == null) {
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				row = inflater.inflate(R.layout.row_category_list, parent, false);
+			}
+			
+			TextView tvGroup = (TextView) row.findViewById(R.id.tvPrayerListTitle);
+			
+			if (tvGroup != null) {
+				//tvGroup.setText(parentList[groupPosition]);
+				tvGroup.setText(categoryList.get(groupPosition).getName());
+			}
+			
+			ImageView indicator = (ImageView) row.findViewById(R.id.ivPrayerListGroupIndicator);
+			
+			if (indicator != null) {
+				if (isExpanded) {
+					indicator.setImageResource(R.drawable.minus_yellow_01);
+				} else {
+					indicator.setImageResource(R.drawable.plus_yellow_01);
+				}
+			}
+			
+			return row;
 		}
-		
-		return row;
 	}
 	
 	@Override
@@ -167,7 +222,7 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
         super.onGroupExpanded(groupPosition);  
         lastExpandedGroupPosition = groupPosition;
     }
-
+	
 	@Override
 	public boolean hasStableIds() {
 		// TODO Auto-generated method stub
@@ -176,8 +231,25 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+	}
+	
+	public void testFunction(int groupPosition, int childPosition) {
+		
+		Prayer clickedPrayer = prayerList.get(groupPosition).get(childPosition);
+		
+		notifyDataSetChanged();
+		
+		if ( clickedPrayer.isExpandedState() ) {
+			
+			clickedPrayer.setExpandedState(false);
+			
+		} else {
+			
+			clickedPrayer.setExpandedState(true);
+			
+		}
+		
 	}
 
 }

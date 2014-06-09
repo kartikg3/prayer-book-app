@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingTop="0.5dp"
     android:paddingBottom="0.5dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="1dp"
     android:orientation="horizontal"
     >
 
@@ -29,20 +31,18 @@
 	        android:orientation="horizontal"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
-	        android:layout_marginRight="10dp"
+	        android:layout_marginRight="15dp"
 	        android:gravity="right" >
 		
 			<ImageView
-		        android:layout_width="10dp"
-		        android:layout_height="10dp"
+		        android:layout_width="15dp"
+		        android:layout_height="15dp"
 		        android:layout_gravity="right|center"	
 		        android:id="@+id/ivPrayerListIndicator"	        
-		        android:src="@drawable/plus_yellow_01" />		
+		        android:src="@drawable/plus_blue_01" />		
 	    
 		</LinearLayout>
 		
-	</LinearLayout>
-	
-	
+	</LinearLayout>	
 	
 </LinearLayout>
