@@ -54,6 +54,17 @@ public class Prayer {
 
 	public void setFavoriteState(boolean favoriteState) {
 		this.favoriteState = favoriteState;
-	}	
+	}
+	
+	public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Prayer)) {
+            return false;
+        }
+        Prayer other = (Prayer) obj;
+        return (this.id == other.id);
+    }
 	
 }

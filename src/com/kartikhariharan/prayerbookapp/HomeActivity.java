@@ -1,6 +1,7 @@
 package com.kartikhariharan.prayerbookapp;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import android.app.ActionBar;
@@ -31,21 +32,21 @@ public class HomeActivity extends Activity {
 	private static final String DB_NAME = "prayers.db";
     
     //A good practice is to define database field names as constants
-	private static final String CATEGORY_TABLE_NAME = "CATEGORY";	
-	private static final String CATEGORY_ID = "CATEGORY_id";
-	private static final String CATEGORY_TITLE = "TITLE";
+	static final String CATEGORY_TABLE_NAME = "CATEGORY";	
+	static final String CATEGORY_ID = "CATEGORY_id";
+	static final String CATEGORY_TITLE = "TITLE";
 	
-	private static final String PRAYER_TABLE_NAME = "PRAYER";
-	private static final String PRAYER_ID = "PRAYER_id";
-	private static final String PRAYER_TITLE = "TITLE";
-	private static final String PRAYER_CONTENT = "CONTENT";
-	private static final String IS_FAVORITE = "IS_FAVORITE";
+	static final String PRAYER_TABLE_NAME = "PRAYER";
+	static final String PRAYER_ID = "PRAYER_id";
+	static final String PRAYER_TITLE = "TITLE";
+	static final String PRAYER_CONTENT = "CONTENT";
+	static final String IS_FAVORITE = "IS_FAVORITE";
 	
-	private static final String CATEGORY_PRAYER_MAP_TABLE_NAME = "CATEGORY_PRAYER_MAP";
-	private static final String CATEGORY_MAP_ID = "CATEGORY_ID";
-	private static final String PRAYER_MAP_ID = "PRAYER_ID";
+	static final String CATEGORY_PRAYER_MAP_TABLE_NAME = "CATEGORY_PRAYER_MAP";
+	static final String CATEGORY_MAP_ID = "CATEGORY_ID";
+	static final String PRAYER_MAP_ID = "PRAYER_ID";
 	
-	private SQLiteDatabase database;
+	SQLiteDatabase database;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +73,16 @@ public class HomeActivity extends Activity {
 
 		categoryList = populateCategoryList(categoryList);
 		prayerList = populatePrayerList(prayerList, categoryList);
-		/*categoryList.add(new Category(1,
-				""));
 		
-		categoryList.add(new Category(2,
-				"Daily Prayers"));*/
+		// Initialize favorites category
+		int arbitraryId = -10;
+		String favTitle = "Favorite Prayers";
+		
+		if (categoryList.get(categoryList.size()-1).getId() != arbitraryId) {
+			categoryList.add(new Category(arbitraryId, favTitle));
+		}
+		
+		populateFavorites(prayerList);
 		
 		exlvHomeListView.setAdapter(new PrayerListAdapter(this, categoryList, prayerList));
 		
@@ -206,9 +212,7 @@ public class HomeActivity extends Activity {
 									int id = prayerCursor.getInt(0);
 									String title = prayerCursor.getString(1);
 									String content = prayerCursor.getString(2);
-									boolean favoriteState = prayerCursor.getInt(3) > 0 ? true : false;
-									
-									//categoryList.add(new Category(id, title));									
+									boolean favoriteState = prayerCursor.getInt(3) > 0 ? true : false;								
 									
 									prayerList.get(i).add(new Prayer(id, title,	content, false, favoriteState));									
 									
@@ -227,6 +231,34 @@ public class HomeActivity extends Activity {
 		}
 		
 		return prayerList;
+	}
+	
+	public void populateFavorites (List<List<Prayer>> prayerList) {
+		
+		int categoryListSize = prayerList.size();			
+		int i = categoryListSize - 1;
+		prayerList.get(i).clear();
+		
+		Cursor prayerCursor = database.query(PRAYER_TABLE_NAME,
+						new String[] {PRAYER_ID, PRAYER_TITLE, PRAYER_CONTENT, IS_FAVORITE},
+						"IS_FAVORITE="+1, null, null, null, PRAYER_ID);	
+	
+	
+		prayerCursor.moveToFirst();
+		if (!prayerCursor.isAfterLast()) {		
+			
+				do {
+					
+					int id = prayerCursor.getInt(0);
+					String title = prayerCursor.getString(1);
+					String content = prayerCursor.getString(2);
+					boolean favoriteState = prayerCursor.getInt(3) > 0 ? true : false;								
+					
+					prayerList.get(i).add(new Prayer(id, title,	content, false, favoriteState));									
+					
+				} while (prayerCursor.moveToNext());
+				
+			}
 	}
 
 }
