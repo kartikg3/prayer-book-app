@@ -8,6 +8,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -29,7 +30,7 @@ public class HomeActivity extends Activity {
 	
 	ExpandableListView exlvHomeListView;
 	
-	private static final String DB_NAME = "prayers.db";
+	static final String DB_NAME = "prayers.db";
     
     //A good practice is to define database field names as constants
 	static final String CATEGORY_TABLE_NAME = "CATEGORY";	
@@ -59,13 +60,13 @@ public class HomeActivity extends Activity {
 		//getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.actionbar);
 		
 		ActionBar actionBar = getActionBar();
-	    actionBar.setDisplayHomeAsUpEnabled(true);
+	    actionBar.setDisplayHomeAsUpEnabled(false);
 		
 		exlvHomeListView = (ExpandableListView) findViewById(R.id.exlvHomeListView);
 		
 		//Our key helper
         DataBaseHelper dbOpenHelper = new DataBaseHelper(this, DB_NAME);
-        database = dbOpenHelper.openDataBase();        
+        database = dbOpenHelper.openDataBase();
         //That’s it, the database is open!
 		
 		List<List<Prayer>> prayerList = new ArrayList<List<Prayer>>();
@@ -126,10 +127,13 @@ public class HomeActivity extends Activity {
 		
 		// Get the SearchView and set the searchable configuration
 	    SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-	    // Assumes current activity is the searchable activity
-	    //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+	    SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		// Assumes current activity is the searchable activity
+	    searchView.setSearchableInfo(searchManager.getSearchableInfo( getComponentName() ));
 	    searchView.setIconifiedByDefault(false);
 	    searchView.setQueryHint(getResources().getText(R.string.search_hint));
+	    
+	    searchView.setFocusable(false);
 	    
 	    int searchSrcTextId = getResources().getIdentifier("android:id/search_src_text", null, null);  
 	    EditText searchEditText = (EditText) searchView.findViewById(searchSrcTextId);  
