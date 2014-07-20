@@ -21,27 +21,21 @@
 		    android:textSize="20sp"
 		    android:textColor="#444466"
 		    android:layout_height="wrap_content"
-		    android:layout_width="wrap_content"
+		    android:layout_width="0dip"
 		    android:id="@+id/tvPrayerTitle"
+		    android:layout_gravity="left"
+			android:layout_weight="1"
 		    android:paddingLeft="10dp"
 		    android:textStyle="bold"
 		    />
 		
-		<LinearLayout
-	        android:orientation="horizontal"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:layout_marginRight="15dp"
-	        android:gravity="right" >
-		
-			<ImageView
-		        android:layout_width="15dp"
-		        android:layout_height="15dp"
-		        android:layout_gravity="right|center"	
-		        android:id="@+id/ivPrayerListIndicator"	        
-		        android:src="@drawable/plus_blue_01" />		
-	    
-		</LinearLayout>
+		<ImageView
+	        android:layout_width="15dp"
+	        android:layout_height="15dp"
+	        android:layout_gravity="right|center"	
+	        android:layout_marginRight="20dip"
+	        android:id="@+id/ivPrayerListIndicator"	        
+	        android:src="@drawable/plus_blue_01" />		
 		
 	</LinearLayout>	
 	

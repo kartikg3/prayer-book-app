@@ -19,53 +19,47 @@
 		    android:textSize="20sp"
 		    android:textColor="#444466"
 		    android:layout_height="wrap_content"
-		    android:layout_width="wrap_content"
+		    android:layout_width="0dip"
+		    android:layout_gravity="left"
+		    android:layout_weight="1"
 		    android:id="@+id/tvPrayerTitle"
 		    android:paddingLeft="10dp"
 		    android:textStyle="bold"
 		    />		
 				
 		
-		<LinearLayout
-	        android:orientation="horizontal"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:layout_marginRight="15dp"
-	        android:gravity="right" >
-			
-		    <ImageButton
-			    android:background="@drawable/share_blue_01"
-			    android:layout_width="22dp"
-		        android:layout_height="22dp"
-		        android:layout_gravity="right|center"
-		        android:layout_marginRight="28dp"
-			    android:focusable="true"
-				android:clickable="true"
-				android:id="@+id/btnShare"
-	    	/>
+		<ImageButton
+		    android:background="@drawable/share_blue_01"
+		    android:layout_width="22dp"
+	        android:layout_height="22dp"
+	        android:layout_gravity="right|center"
+	        android:layout_marginRight="28dp"
+		    android:focusable="true"
+			android:clickable="true"
+			android:id="@+id/btnShare"
+    		/>
 		    
-		    <ImageButton
-			    android:background="@drawable/star_gray_01"
-			    android:layout_width="22dp"
-		        android:layout_height="22dp"
-		        android:layout_gravity="right|center"
-		        android:layout_marginRight="28dp"
-			    android:focusable="true"
-				android:clickable="true"
-				android:id="@+id/btnFavorite"
-	    	/>
-			
-			<ImageButton
-				android:background="@drawable/collapse_blue_01"
-				android:layout_width="20dp"
-		        android:layout_height="20dp"
-		        android:layout_gravity="right|center"	
-		        android:id="@+id/ivPrayerListIndicator"
-			    android:focusable="true"
-				android:clickable="true"
+	    <ImageButton
+		    android:background="@drawable/star_gray_01"
+		    android:layout_width="22dp"
+	        android:layout_height="22dp"
+	        android:layout_gravity="right|center"
+	        android:layout_marginRight="28dp"
+		    android:focusable="true"
+			android:clickable="true"
+			android:id="@+id/btnFavorite"
+    		/>
+		
+		<ImageButton
+			android:background="@drawable/collapse_blue_01"
+			android:layout_width="20dp"
+	        android:layout_height="20dp"
+	        android:layout_marginRight="20dip"
+	        android:layout_gravity="right|center"	
+	        android:id="@+id/ivPrayerListIndicator"
+		    android:focusable="true"
+			android:clickable="true"
 			/>
-	    
-		</LinearLayout>
 		
 	</LinearLayout>
 

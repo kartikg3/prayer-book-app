@@ -173,15 +173,15 @@ static final String DB_NAME = "prayers.db";
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		int lastExpandedGroup = savedInstanceState.getInt("LAST_EXPANDED_GROUP");
-		int[] lastExpandedPrayer = savedInstanceState.getIntArray("LAST_EXPANDED_PRAYER");
+		//int lastExpandedGroup = savedInstanceState.getInt("LAST_EXPANDED_GROUP");
+		//int[] lastExpandedPrayer = savedInstanceState.getIntArray("LAST_EXPANDED_PRAYER");
 		//((PrayerSearchAdapter) lvSearchResults.getAdapter()).setLastExpandedGroupPosition(lastExpandedGroup);
 		//((PrayerSearchAdapter) lvSearchResults.getAdapter()).setLastExpandedPrayer(lastExpandedPrayer);
-		if (lastExpandedPrayer[0] != -1 && lastExpandedPrayer[1] != -1) {
+		//if (lastExpandedPrayer[0] != -1 && lastExpandedPrayer[1] != -1) {
 			
 			//((PrayerSearchAdapter) lvSearchResults.getAdapter()).clickPrayer(lastExpandedPrayer[0], lastExpandedPrayer[1]);
 			
-		}
+		//}
 	}
 
 
