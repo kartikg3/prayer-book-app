@@ -3,6 +3,7 @@ package com.kartikhariharan.prayerbookapp;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -23,6 +24,8 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 	
 	private Context context;
 	private int lastExpandedGroupPosition;
+	
+	private int lastExpandedPrayer[] = {-1, -1};
 	
 	private List<List<Prayer>> prayerList;
 	private List<Category> categoryList;
@@ -65,6 +68,7 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 			
 			//tvChild.setText(childList[groupPosition][childPosition]);
 			tvChild.setText(prayer.getTitle());
+			//tvChild.setTypeface(Typeface.createFromAsset(((Activity) this.context).getAssets(), "font/helvetica_neue_ce_35_thin.ttf"));
 			
 			ImageView indicator = (ImageView) row.findViewById(R.id.ivPrayerListIndicator);
 			
@@ -79,13 +83,16 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 				row = inflater.inflate(R.layout.row_prayer_detail_list, parent, false);
 			}
 			
+			
 			TextView tvChild = (TextView) row.findViewById(R.id.tvPrayerTitle);
 			
 			//tvChild.setText(childList[groupPosition][childPosition]);
 			tvChild.setText(prayer.getTitle());
+			//tvChild.setTypeface(Typeface.createFromAsset(((Activity) this.context).getAssets(), "font/helvetica_neue_ce_35_thin.ttf"));
 			
 			TextView tvContent = (TextView) row.findViewById(R.id.tvPrayerContent);
 			tvContent.setText(prayer.getContent());
+			//tvContent.setTypeface(Typeface.createFromAsset(((Activity) this.context).getAssets(), "font/helvetica_neue_ce_35_thin.ttf"));
 			
 			ImageButton indicator = (ImageButton) row.findViewById(R.id.ivPrayerListIndicator);
 			
@@ -166,6 +173,8 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 			font = Typeface.createFromAsset(((Activity) this.context).getAssets(), "font/p22-corinthia.ttf");
 			tvTitleLine02.setTypeface(font);
 			
+			row.setClickable(false);
+			
 			return row;
 			
 		} else {
@@ -225,7 +234,7 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 		return true;
 	}
 	
-	public void testFunction(int groupPosition, int childPosition) {
+	public void clickPrayer(int groupPosition, int childPosition) {
 		
 		Prayer clickedPrayer = prayerList.get(groupPosition).get(childPosition);
 		
@@ -252,6 +261,30 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 			}
 		}
 		
+		this.lastExpandedPrayer[0] = groupPosition;
+		this.lastExpandedPrayer[1] = childPosition;
+		
+	}
+
+	public int getLastExpandedGroupPosition() {
+		return lastExpandedGroupPosition;
+	}
+
+	public void setLastExpandedGroupPosition(int lastExpandedGroupPosition) {
+		this.lastExpandedGroupPosition = lastExpandedGroupPosition;
+	}
+
+	public int[] getLastExpandedPrayer() {
+		return lastExpandedPrayer;
+	}
+
+	public void setLastExpandedPrayer(int[] lastExpandedPrayer) {
+		this.lastExpandedPrayer = lastExpandedPrayer;
+	}
+	
+	public void setLastExpandedPrayer(int groupPosition, int childPosition) {
+		this.lastExpandedPrayer[0] = groupPosition;
+		this.lastExpandedPrayer[1] = childPosition;
 	}
 
 }

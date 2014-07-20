@@ -15,10 +15,10 @@
 	    android:paddingTop="12dp"
 	    android:paddingBottom="12dp"
 	    android:background="#EEFFFFFF"
-	    android:orientation="horizontal" >
+	    >
 	    
 		<TextView 
-		    android:textSize="18sp"
+		    android:textSize="20sp"
 		    android:textColor="#444466"
 		    android:layout_height="wrap_content"
 		    android:layout_width="wrap_content"

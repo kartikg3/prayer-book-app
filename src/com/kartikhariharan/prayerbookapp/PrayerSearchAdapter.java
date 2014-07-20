@@ -10,16 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 	
@@ -29,7 +24,7 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 	public PrayerSearchAdapter(Context context, List<Prayer> prayerList) {
 		super(context, R.layout.row_prayer_title_list, prayerList);
 		this.context = context;
-		this.prayerList = prayerList;		
+		this.prayerList = prayerList;
 	}
 
 	public int getCount() {
@@ -84,11 +79,13 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 			
 			TextView tvContent = (TextView) row.findViewById(R.id.tvPrayerContent);
 			
-			String content = prayer.getContent();
-			String query =((SearchableActivity) context).query;
+			String content = new String(prayer.getContent());
+			String query = new String( ((SearchableActivity) context).query );			
+			
 			content = content.replaceAll("\n", "<br/>");
-			content = content.replaceAll( "(?i)"+query ,
-					String.format("<font color='#BB0000'>%s</font>", query));
+			content = content.replaceAll( "(?i)("+query+")" ,
+					String.format("<font color='#FF4500'>$1</font>"));
+			
 			
 			tvContent.setText(Html.fromHtml(content));
 			
@@ -144,6 +141,8 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 								null);
 						prayer.setFavoriteState(false);
 						
+						Toast.makeText(context, "Removed from Favorite Prayers", Toast.LENGTH_SHORT).show();
+						
 					} else {
 						
 						// Update in database
@@ -155,6 +154,8 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 										prayer.getId()),
 								null);
 						prayer.setFavoriteState(true);
+						
+						Toast.makeText(context, "Added to Favorite Prayers", Toast.LENGTH_SHORT).show();
 						
 					}
 					
@@ -202,15 +203,6 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 				ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList);
 				((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
 				
-				// Creating the expand animation for the item
-				/*
-				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				LinearLayout linearLayout = (LinearLayout) v.findViewById(R.id.llSearchResults);
-			    ExpandAnimation expandAni = new ExpandAnimation(linearLayout, 500);
-			    */
-
-			    // Start the animation on the toolbar
-			    //v.startAnimation(expandAni);
 			}
 		});
 		

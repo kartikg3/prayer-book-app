@@ -77,6 +77,8 @@ static final String DB_NAME = "prayers.db";
 		ActionBar actionBar = getActionBar();
 	    actionBar.setDisplayHomeAsUpEnabled(true);
 	    
+	    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE|ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
+	    
 	    lvSearchResults = (ListView) findViewById(R.id.lvSearchResults);
 	    
 	    //Our key helper
@@ -110,7 +112,6 @@ static final String DB_NAME = "prayers.db";
 	    
 	    if (query != null) {
 	    	searchView.setQuery(query, false);
-	    	Log.d("DEBUG", query);
 	    }
 	    
 	    int searchSrcTextId = getResources().getIdentifier("android:id/search_src_text", null, null);  
@@ -129,9 +130,9 @@ static final String DB_NAME = "prayers.db";
 	private void handleIntent(Intent intent) {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	    	
-		    String query = intent.getStringExtra(SearchManager.QUERY);	    
+		    this.query = intent.getStringExtra(SearchManager.QUERY);	    
 		    
-		    doSearch(query);
+		    doSearch(this.query);
 		    
 	    }
 	}
@@ -146,7 +147,7 @@ static final String DB_NAME = "prayers.db";
 				new String[] {SearchableActivity.PRAYER_ID, SearchableActivity.PRAYER_TITLE, SearchableActivity.PRAYER_CONTENT, SearchableActivity.IS_FAVORITE},
 				String.format("%s LIKE %s OR %s LIKE %s",
 						SearchableActivity.PRAYER_CONTENT, "'%" + query + "%'",
-						SearchableActivity.PRAYER_CONTENT, "'%" + query + "%'"),
+						SearchableActivity.PRAYER_TITLE, "'%" + query + "%'"),
 				null, null, null, SearchableActivity.PRAYER_ID);
 		
 		tvResultsCount.setText(String.format("%d", prayerCursor.getCount()));
@@ -167,6 +168,28 @@ static final String DB_NAME = "prayers.db";
 		
 		ArrayAdapter<Prayer> adapter = new PrayerSearchAdapter(this, prayerList);
 		lvSearchResults.setAdapter(adapter);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		int lastExpandedGroup = savedInstanceState.getInt("LAST_EXPANDED_GROUP");
+		int[] lastExpandedPrayer = savedInstanceState.getIntArray("LAST_EXPANDED_PRAYER");
+		//((PrayerSearchAdapter) lvSearchResults.getAdapter()).setLastExpandedGroupPosition(lastExpandedGroup);
+		//((PrayerSearchAdapter) lvSearchResults.getAdapter()).setLastExpandedPrayer(lastExpandedPrayer);
+		if (lastExpandedPrayer[0] != -1 && lastExpandedPrayer[1] != -1) {
+			
+			//((PrayerSearchAdapter) lvSearchResults.getAdapter()).clickPrayer(lastExpandedPrayer[0], lastExpandedPrayer[1]);
+			
+		}
+	}
+
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		//outState.putInt("LAST_EXPANDED_GROUP", ((PrayerSearchAdapter) lvSearchResults.getAdapter()).getLastExpandedGroupPosition());
+		//outState.putIntArray("LAST_EXPANDED_PRAYER", ((PrayerSearchAdapter) lvSearchResults.getAdapter()).getLastExpandedPrayer());
 	}
 
 }

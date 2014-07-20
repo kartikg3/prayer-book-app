@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Toast;
 
 public class FavoriteOnClickListener implements OnClickListener {
 	
@@ -55,6 +56,8 @@ public class FavoriteOnClickListener implements OnClickListener {
 			homeActivity.populateFavorites(prayerList);
 			plAdapter.notifyDataSetChanged();
 			
+			Toast.makeText(context, "Removed from Favorite Prayers", Toast.LENGTH_SHORT).show();
+			
 		} else {
 			
 			// Update in database
@@ -83,6 +86,8 @@ public class FavoriteOnClickListener implements OnClickListener {
 			
 			homeActivity.populateFavorites(prayerList);
 			plAdapter.notifyDataSetChanged();
+			
+			Toast.makeText(context, "Added to Favorite Prayers", Toast.LENGTH_SHORT).show();
 		}
 		
 	}

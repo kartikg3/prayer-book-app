@@ -1,5 +1,6 @@
 package com.kartikhariharan.prayerbookapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ListAdapter;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -49,6 +51,9 @@ public class HomeActivity extends Activity {
 	
 	SQLiteDatabase database;
 	
+	List<List<Prayer>> prayerList;
+	List<Category> categoryList;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
@@ -69,8 +74,8 @@ public class HomeActivity extends Activity {
         database = dbOpenHelper.openDataBase();
         //That’s it, the database is open!
 		
-		List<List<Prayer>> prayerList = new ArrayList<List<Prayer>>();
-		List<Category> categoryList = new ArrayList<Category>();
+		prayerList = new ArrayList<List<Prayer>>();
+		categoryList = new ArrayList<Category>();
 
 		categoryList = populateCategoryList(categoryList);
 		prayerList = populatePrayerList(prayerList, categoryList);
@@ -113,7 +118,7 @@ public class HomeActivity extends Activity {
 			public boolean onChildClick(ExpandableListView parent, View v,
 					int groupPosition, int childPosition, long id) {
 				
-				((PrayerListAdapter) parent.getExpandableListAdapter()).testFunction(groupPosition, childPosition);
+				((PrayerListAdapter) parent.getExpandableListAdapter()).clickPrayer(groupPosition, childPosition);
 				return false;
 				
 			}			
@@ -144,8 +149,21 @@ public class HomeActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
+		
+		switch (item.getItemId()) {
+		
+		case R.id.menu_item_about:
+			Intent aboutIntent = new Intent(this, About.class);
+			startActivity(aboutIntent);
+			break;
+		
+		default:
+			return super.onOptionsItemSelected(item);
+		
+		}
+		
 		return super.onOptionsItemSelected(item);
+		
 	}
 	
 	public List<Category> populateCategoryList (List<Category> categoryList) {
@@ -239,15 +257,21 @@ public class HomeActivity extends Activity {
 	
 	public void populateFavorites (List<List<Prayer>> prayerList) {
 		
-		int categoryListSize = prayerList.size();			
+		int categoryListSize = prayerList.size();	
+		
+		categoryListSize = categoryList.size();
+		
 		int i = categoryListSize - 1;
+		
+		Log.d("DEBUG", "Category size: " + i); 
+		
 		prayerList.get(i).clear();
 		
 		Cursor prayerCursor = database.query(PRAYER_TABLE_NAME,
 						new String[] {PRAYER_ID, PRAYER_TITLE, PRAYER_CONTENT, IS_FAVORITE},
-						"IS_FAVORITE="+1, null, null, null, PRAYER_ID);	
+						"IS_FAVORITE="+1, null, null, null, PRAYER_ID);
 	
-	
+				
 		prayerCursor.moveToFirst();
 		if (!prayerCursor.isAfterLast()) {		
 			
@@ -264,5 +288,30 @@ public class HomeActivity extends Activity {
 				
 			}
 	}
+
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		int lastExpandedGroup = savedInstanceState.getInt("LAST_EXPANDED_GROUP");
+		int[] lastExpandedPrayer = savedInstanceState.getIntArray("LAST_EXPANDED_PRAYER");
+		((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).setLastExpandedGroupPosition(lastExpandedGroup);
+		((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).setLastExpandedPrayer(lastExpandedPrayer);
+		if (lastExpandedPrayer[0] != -1 && lastExpandedPrayer[1] != -1) {
+			
+			((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).clickPrayer(lastExpandedPrayer[0], lastExpandedPrayer[1]);
+			
+		}
+	}
+
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("LAST_EXPANDED_GROUP", ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedGroupPosition());
+		outState.putIntArray("LAST_EXPANDED_PRAYER", ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedPrayer());
+	}
+	
+	
 
 }
