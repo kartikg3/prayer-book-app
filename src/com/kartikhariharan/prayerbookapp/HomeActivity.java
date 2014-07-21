@@ -314,6 +314,12 @@ public class HomeActivity extends Activity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
+		
+		int lastExpandedGroup = ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedGroupPosition();
+		int[] lastExpandedPrayer = ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedPrayer();
+		
+		Log.d("DEBUG", "frm restart: " + lastExpandedPrayer[0] + " " + lastExpandedPrayer[1]);
+		
 		prayerList = new ArrayList<List<Prayer>>();
 		categoryList = new ArrayList<Category>();
 
@@ -331,6 +337,19 @@ public class HomeActivity extends Activity {
 		populateFavorites(prayerList);
 		
 		exlvHomeListView.setAdapter(new PrayerListAdapter(this, categoryList, prayerList));
+		
+		((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).setLastExpandedGroupPosition(lastExpandedGroup);
+		((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).setLastExpandedPrayer(lastExpandedPrayer);
+		
+		if (lastExpandedGroup != -1) {
+			exlvHomeListView.expandGroup(lastExpandedGroup);
+		}
+		
+		if (lastExpandedPrayer[0] != -1 && lastExpandedPrayer[1] != -1) {
+			
+			((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).clickPrayer(lastExpandedPrayer[0], lastExpandedPrayer[1]);
+			
+		}
 	}
 
 }

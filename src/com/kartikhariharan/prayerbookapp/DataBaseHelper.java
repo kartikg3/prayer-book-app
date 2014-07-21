@@ -33,7 +33,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         this.context = context;
 		//Write a full path to the databases of your application
 		String packageName = context.getPackageName();
-		Log.d("DEBUG", "PackageName is: "+packageName);
 		DB_PATH = String.format("//data//data//%s//databases//", packageName);
 		DB_NAME = databaseName;
 		openDataBase();
@@ -65,7 +64,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         } catch (SQLException e) {
             Log.e(this.getClass().toString(), "Error while checking db");
         }
-        //Android doesn’t like resource leaks, everything should 
+        // Android doesn’t like resource leaks, everything should 
         // be closed
         if (checkDb != null) {
             checkDb.close();
