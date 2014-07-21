@@ -6,7 +6,7 @@
     <string name="home_title_line02">\u00A0Golden Book of Prayers</string>
     <string name="search_label">Search</string>
     <string name="search_hint">e.g. Job, family etc.</string>
-    <string name="about_desc">
+    <string name="about_desc">\n
 Concept: Merwyn Xavier, Kartik Hariharan\n
 Development: Kartik Hariharan\n
 Design: Merwyn Xavier\n

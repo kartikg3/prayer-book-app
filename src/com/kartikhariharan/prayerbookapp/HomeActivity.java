@@ -124,6 +124,8 @@ public class HomeActivity extends Activity {
 			}			
 			
 		});
+		
+		
 	}
 
 	@Override
@@ -350,6 +352,7 @@ public class HomeActivity extends Activity {
 			((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).clickPrayer(lastExpandedPrayer[0], lastExpandedPrayer[1]);
 			
 		}
+		
 	}
 
 }

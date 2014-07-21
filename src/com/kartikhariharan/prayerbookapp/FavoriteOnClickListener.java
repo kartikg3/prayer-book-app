@@ -32,13 +32,15 @@ public class FavoriteOnClickListener implements OnClickListener {
 			// Update in database
 			HomeActivity homeActivity = (HomeActivity) context;
 			ContentValues values = new ContentValues();
-			values.put(HomeActivity.IS_FAVORITE, 0);
+			values.put(HomeActivity.IS_FAVORITE, 0);			
+			
 			homeActivity.database.update(HomeActivity.PRAYER_TABLE_NAME,
 					values,
 					String.format("%s=%d",
 							HomeActivity.PRAYER_ID,
 							prayer.getId()),
 					null);
+			
 			
 			// Toggle favorite state on OFF
 			prayer.setFavoriteState(false);			
@@ -64,12 +66,15 @@ public class FavoriteOnClickListener implements OnClickListener {
 			HomeActivity homeActivity = (HomeActivity) context;
 			ContentValues values = new ContentValues();
 			values.put(HomeActivity.IS_FAVORITE, 1);
+			
+			
 			homeActivity.database.update(HomeActivity.PRAYER_TABLE_NAME,
 					values,
 					String.format("%s=%d",
 							HomeActivity.PRAYER_ID,
 							prayer.getId()),
 					null);
+			
 			
 			// Toggle favorite state on ON
 			prayer.setFavoriteState(true);			

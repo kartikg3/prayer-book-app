@@ -80,11 +80,9 @@ static final String DB_NAME = "prayers.db";
 	    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE|ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
 	    
 	    lvSearchResults = (ListView) findViewById(R.id.lvSearchResults);
-	    
-	    //Our key helper
-        DataBaseHelper dbOpenHelper = new DataBaseHelper(this, SearchableActivity.DB_NAME);
+        
+	    DataBaseHelper dbOpenHelper = new DataBaseHelper(this, SearchableActivity.DB_NAME);
         database = dbOpenHelper.openDataBase();
-        //That’s it, the database is open!
         
         if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
 	    	
@@ -103,13 +101,12 @@ static final String DB_NAME = "prayers.db";
 		// Get the SearchView and set the searchable configuration
 	    searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 	    searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+	    
 		// Assumes current activity is the searchable activity
 	    searchView.setSearchableInfo(searchManager.getSearchableInfo( getComponentName() ));
 	    searchView.setIconifiedByDefault(false);
 	    searchView.setQueryHint(getResources().getText(R.string.search_hint));
-	    	    
-	    //searchView.requestFocus();
-	    
+	    	    	    
 	    if (query != null) {
 	    	searchView.setQuery(query, false);
 	    }
@@ -168,6 +165,7 @@ static final String DB_NAME = "prayers.db";
 		
 		ArrayAdapter<Prayer> adapter = new PrayerSearchAdapter(this, prayerList);
 		lvSearchResults.setAdapter(adapter);
+		
 	}
 	
 	@Override
