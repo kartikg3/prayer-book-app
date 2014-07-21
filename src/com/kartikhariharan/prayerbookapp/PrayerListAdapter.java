@@ -265,6 +265,10 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 		this.lastExpandedPrayer[1] = childPosition;
 		
 	}
+	
+	public void refresh(){
+		notifyDataSetChanged();
+	}
 
 	public int getLastExpandedGroupPosition() {
 		return lastExpandedGroupPosition;

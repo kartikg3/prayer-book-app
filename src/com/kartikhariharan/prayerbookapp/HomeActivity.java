@@ -263,8 +263,6 @@ public class HomeActivity extends Activity {
 		
 		int i = categoryListSize - 1;
 		
-		Log.d("DEBUG", "Category size: " + i); 
-		
 		prayerList.get(i).clear();
 		
 		Cursor prayerCursor = database.query(PRAYER_TABLE_NAME,
@@ -302,6 +300,7 @@ public class HomeActivity extends Activity {
 			((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).clickPrayer(lastExpandedPrayer[0], lastExpandedPrayer[1]);
 			
 		}
+		
 	}
 
 
@@ -311,7 +310,27 @@ public class HomeActivity extends Activity {
 		outState.putInt("LAST_EXPANDED_GROUP", ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedGroupPosition());
 		outState.putIntArray("LAST_EXPANDED_PRAYER", ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedPrayer());
 	}
-	
-	
+
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		prayerList = new ArrayList<List<Prayer>>();
+		categoryList = new ArrayList<Category>();
+
+		categoryList = populateCategoryList(categoryList);
+		prayerList = populatePrayerList(prayerList, categoryList);
+		
+		// Initialize favorites category
+		int arbitraryId = -10;
+		String favTitle = "Favorite Prayers";
+		
+		if (categoryList.get(categoryList.size()-1).getId() != arbitraryId) {
+			categoryList.add(new Category(arbitraryId, favTitle));
+		}
+		
+		populateFavorites(prayerList);
+		
+		exlvHomeListView.setAdapter(new PrayerListAdapter(this, categoryList, prayerList));
+	}
 
 }
