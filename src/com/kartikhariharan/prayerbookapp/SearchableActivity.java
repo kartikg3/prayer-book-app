@@ -173,23 +173,19 @@ static final String DB_NAME = "prayers.db";
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		//int lastExpandedGroup = savedInstanceState.getInt("LAST_EXPANDED_GROUP");
-		//int[] lastExpandedPrayer = savedInstanceState.getIntArray("LAST_EXPANDED_PRAYER");
-		//((PrayerSearchAdapter) lvSearchResults.getAdapter()).setLastExpandedGroupPosition(lastExpandedGroup);
-		//((PrayerSearchAdapter) lvSearchResults.getAdapter()).setLastExpandedPrayer(lastExpandedPrayer);
-		//if (lastExpandedPrayer[0] != -1 && lastExpandedPrayer[1] != -1) {
+		int lastExpandedPosition = savedInstanceState.getInt("LAST_EXPANDED_GROUP");
+		if (lastExpandedPosition != -1) {
 			
-			//((PrayerSearchAdapter) lvSearchResults.getAdapter()).clickPrayer(lastExpandedPrayer[0], lastExpandedPrayer[1]);
+			((PrayerSearchAdapter) lvSearchResults.getAdapter()).expandPrayer(lastExpandedPosition);
 			
-		//}
+		}
 	}
 
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		//outState.putInt("LAST_EXPANDED_GROUP", ((PrayerSearchAdapter) lvSearchResults.getAdapter()).getLastExpandedGroupPosition());
-		//outState.putIntArray("LAST_EXPANDED_PRAYER", ((PrayerSearchAdapter) lvSearchResults.getAdapter()).getLastExpandedPrayer());
+		outState.putInt("LAST_EXPANDED_GROUP", ((PrayerSearchAdapter) lvSearchResults.getAdapter()).getLastExpandedPosition());
 	}
 
 }

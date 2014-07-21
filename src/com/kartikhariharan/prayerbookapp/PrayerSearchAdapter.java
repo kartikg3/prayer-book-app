@@ -21,10 +21,20 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 	private List<Prayer> prayerList;
 	Context context;
 	
+	int lastExpandedPosition;
+	
 	public PrayerSearchAdapter(Context context, List<Prayer> prayerList) {
 		super(context, R.layout.row_prayer_title_list, prayerList);
 		this.context = context;
 		this.prayerList = prayerList;
+		this.lastExpandedPosition = -1;
+	}
+	
+	public PrayerSearchAdapter(Context context, List<Prayer> prayerList, int lastExpandedPosition) {
+		super(context, R.layout.row_prayer_title_list, prayerList);
+		this.context = context;
+		this.prayerList = prayerList;
+		this.lastExpandedPosition = lastExpandedPosition;
 	}
 
 	public int getCount() {
@@ -97,15 +107,18 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 					Prayer prayer = prayerList.get(this.position);
 					if ( prayer.isExpandedState() ) {
 						
-						prayer.setExpandedState(false);
+						prayer.setExpandedState(false);						
+						this.plAdapter.setLastExpandedPosition(-1);
+						this.position = -1;
 						
 					} else {
 						
 						prayer.setExpandedState(true);
+						this.plAdapter.setLastExpandedPosition(this.position);
 						
 					}
 					
-					ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList);
+					ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList, this.position);
 					((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
 									
 				}
@@ -184,10 +197,13 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 				if ( prayer.isExpandedState() ) {
 					
 					prayer.setExpandedState(false);
+					this.plAdapter.setLastExpandedPosition(-1);
+					this.position = -1;
 					
 				} else {
 					
 					prayer.setExpandedState(true);
+					this.plAdapter.setLastExpandedPosition(this.position);
 					
 				}
 				
@@ -200,7 +216,7 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 					}
 				}
 				
-				ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList);
+				ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList, this.position);
 				((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
 				
 			}
@@ -243,6 +259,34 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 	@Override
 	public boolean isEnabled(int position) {
 		return true;
+	}
+
+	public int getLastExpandedPosition() {
+		return lastExpandedPosition;
+	}
+
+	public void setLastExpandedPosition(int lastExpandedPosition) {
+		this.lastExpandedPosition = lastExpandedPosition;
+	}
+	
+	public void expandPrayer(int position) {
+		Prayer prayer = prayerList.get(position);
+				
+		prayer.setExpandedState(true);
+		lastExpandedPosition = position;
+		
+		// Collapse all other prayers
+		for (int i = 0 ; i < prayerList.size() ; i++) {
+			if (prayer.getId() == prayerList.get(i).getId()) {
+				continue;
+			} else {
+				prayerList.get(i).setExpandedState(false);
+			}
+		}
+		
+		ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList, position);
+		((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
+		
 	}
 
 }
