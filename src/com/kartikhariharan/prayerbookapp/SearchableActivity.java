@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -186,4 +187,23 @@ static final String DB_NAME = "prayers.db";
 		outState.putInt("LAST_EXPANDED_GROUP", ((PrayerSearchAdapter) lvSearchResults.getAdapter()).getLastExpandedPosition());
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch (item.getItemId()) {
+		
+		case R.id.menu_item_about:
+			Intent aboutIntent = new Intent(this, About.class);
+			startActivity(aboutIntent);
+			break;
+		
+		default:
+			return super.onOptionsItemSelected(item);
+		
+		}
+		
+		return super.onOptionsItemSelected(item);
+		
+	}
+	
 }

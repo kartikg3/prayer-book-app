@@ -221,6 +221,7 @@ public class PrayerListAdapter extends BaseExpandableListAdapter {
 
         super.onGroupExpanded(groupPosition);  
         lastExpandedGroupPosition = groupPosition;
+        
     }
 	
 	@Override

@@ -28,7 +28,7 @@ public class PrayerDetailExpandOnClickListener implements OnClickListener {
 	}
 
 	@Override
-	public void onClick(View v) {		
+	public void onClick(View v) {
 		
 		if ( prayer.isExpandedState() ) {
 			
