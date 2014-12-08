@@ -1,6 +1,15 @@
-package com.kartikhariharan.prayerbookapp;
+package com.kartikhariharan.prayerbookapp.adapters;
 
 import java.util.List;
+
+import com.kartikhariharan.prayerbookapp.Prayer;
+import com.kartikhariharan.prayerbookapp.R;
+import com.kartikhariharan.prayerbookapp.SearchPrayerDetailExpandOnClickListener;
+import com.kartikhariharan.prayerbookapp.ShareOnClickListener;
+import com.kartikhariharan.prayerbookapp.R.drawable;
+import com.kartikhariharan.prayerbookapp.R.id;
+import com.kartikhariharan.prayerbookapp.R.layout;
+import com.kartikhariharan.prayerbookapp.activities.SearchableActivity;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -90,7 +99,7 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 			TextView tvContent = (TextView) row.findViewById(R.id.tvPrayerContent);
 			
 			String content = new String(prayer.getContent());
-			String query = new String( ((SearchableActivity) context).query );			
+			String query = new String( ((SearchableActivity) context).getQuery() );			
 			
 			content = content.replaceAll("\n", "<br/>");
 			content = content.replaceAll( "(?i)("+query+")" ,
@@ -119,7 +128,8 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 					}
 					
 					ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList, this.position);
-					((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
+					((SearchableActivity) context).getLvSearchResults().setAdapter(newPlAdapter);
+					
 									
 				}
 			});
@@ -145,11 +155,11 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 					if ( prayer.isFavoriteState() ) {
 						
 						// Update in database						
-						values.put(SearchableActivity.IS_FAVORITE, 0);
-						searchableActivity.database.update(SearchableActivity.PRAYER_TABLE_NAME,
+						values.put(SearchableActivity.getIsFavorite(), 0);
+						searchableActivity.getDatabase().update(SearchableActivity.getPrayerTableName(),
 								values,
 								String.format("%s=%d",
-										SearchableActivity.PRAYER_ID,
+										SearchableActivity.getPrayerId(),
 										prayer.getId()),
 								null);
 						prayer.setFavoriteState(false);
@@ -159,11 +169,11 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 					} else {
 						
 						// Update in database
-						values.put(SearchableActivity.IS_FAVORITE, 1);
-						searchableActivity.database.update(SearchableActivity.PRAYER_TABLE_NAME,
+						values.put(SearchableActivity.getIsFavorite(), 1);
+						searchableActivity.getDatabase().update(SearchableActivity.getPrayerTableName(),
 								values,
 								String.format("%s=%d",
-										SearchableActivity.PRAYER_ID,
+										SearchableActivity.getPrayerId(),
 										prayer.getId()),
 								null);
 						prayer.setFavoriteState(true);
@@ -173,7 +183,7 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 					}
 					
 					ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList);
-					((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
+					((SearchableActivity) context).getLvSearchResults().setAdapter(newPlAdapter);
 							     
 									
 				}
@@ -217,7 +227,8 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 				}
 				
 				ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList, this.position);
-				((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
+				((SearchableActivity) context).getLvSearchResults().setAdapter(newPlAdapter);
+				
 				
 			}
 		});
@@ -285,7 +296,7 @@ public class PrayerSearchAdapter extends ArrayAdapter<Prayer> {
 		}
 		
 		ArrayAdapter<Prayer> newPlAdapter = new PrayerSearchAdapter(context, prayerList, position);
-		((SearchableActivity) context).lvSearchResults.setAdapter(newPlAdapter);
+		((SearchableActivity) context).getLvSearchResults().setAdapter(newPlAdapter);
 		
 	}
 

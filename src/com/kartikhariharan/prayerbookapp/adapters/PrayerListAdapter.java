@@ -1,7 +1,17 @@
-package com.kartikhariharan.prayerbookapp;
+package com.kartikhariharan.prayerbookapp.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.kartikhariharan.prayerbookapp.Category;
+import com.kartikhariharan.prayerbookapp.FavoriteOnClickListener;
+import com.kartikhariharan.prayerbookapp.Prayer;
+import com.kartikhariharan.prayerbookapp.PrayerDetailExpandOnClickListener;
+import com.kartikhariharan.prayerbookapp.R;
+import com.kartikhariharan.prayerbookapp.ShareOnClickListener;
+import com.kartikhariharan.prayerbookapp.R.drawable;
+import com.kartikhariharan.prayerbookapp.R.id;
+import com.kartikhariharan.prayerbookapp.R.layout;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;

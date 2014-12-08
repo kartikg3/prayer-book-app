@@ -2,10 +2,14 @@ package com.kartikhariharan.prayerbookapp;
 
 import java.util.List;
 
+import com.kartikhariharan.prayerbookapp.adapters.PrayerListAdapter;
+
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ExpandableListView;
 
 public class PrayerDetailExpandOnClickListener implements OnClickListener {
 	
@@ -30,12 +34,13 @@ public class PrayerDetailExpandOnClickListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		
+		Activity mActivity = (Activity) context;
+		ExpandableListView listView = (ExpandableListView) mActivity.findViewById(R.id.exlvHomeListView);
+		
 		if ( prayer.isExpandedState() ) {
-			
 			prayer.setExpandedState(false);
 			
 		} else {
-			
 			prayer.setExpandedState(true);
 			
 		}		

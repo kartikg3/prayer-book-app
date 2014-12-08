@@ -1,4 +1,8 @@
-package com.kartikhariharan.prayerbookapp;
+package com.kartikhariharan.prayerbookapp.activities;
+
+import com.kartikhariharan.prayerbookapp.R;
+import com.kartikhariharan.prayerbookapp.R.id;
+import com.kartikhariharan.prayerbookapp.R.layout;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -10,9 +14,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-public class About extends Activity {
+public class AboutActivity extends Activity {
 
-	public About() {
+	public AboutActivity() {
 		// TODO Auto-generated constructor stub
 	}
 

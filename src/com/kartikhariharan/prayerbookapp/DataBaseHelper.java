@@ -6,6 +6,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,6 +25,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //Database file name
     public static String DB_NAME;
+    public static String TMP_DB_NAME;
     public SQLiteDatabase database;
     public final Context context;
 
@@ -35,6 +40,71 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		String packageName = context.getPackageName();
 		DB_PATH = String.format("//data//data//%s//databases//", packageName);
 		DB_NAME = databaseName;
+		TMP_DB_NAME = "tmp_" + databaseName;		
+		
+		ApplicationInfo ai;
+		try {
+			ai = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+			if(ai.metaData.get("DBVersion") != null)
+				Log.i(packageName, "DBVersion meta data: " + ai.metaData.get("DBVersion"));
+			else 
+				Log.i(packageName, "DBVersion meta data: NOT FOUND");
+		} catch (NameNotFoundException e) { 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			
+			//Open a stream for reading from our ready-made database
+	        //The stream source is located in the assets
+	        InputStream externalDbStream = context.getAssets().open(DB_NAME);
+
+	         //Path to the created empty database on your Android device
+	        String outFileName = DB_PATH + TMP_DB_NAME;
+
+	         //Now create a stream for writing the database byte by byte
+	        OutputStream localDbStream = new FileOutputStream(outFileName);
+
+	         //Copying the database
+	        byte[] buffer = new byte[1024];
+	        int bytesRead;
+	        
+	        while ((bytesRead = externalDbStream.read(buffer)) > 0) {
+	        	
+	            localDbStream.write(buffer, 0, bytesRead);
+	            
+	        }
+	        
+	        //Don’t forget to close the streams
+	        localDbStream.close();
+	        externalDbStream.close();
+	        
+	        SQLiteDatabase tmpDatabase = SQLiteDatabase.openDatabase(outFileName, null,
+	                SQLiteDatabase.OPEN_READONLY);
+				
+	        
+	        try {
+	        	
+	        	Cursor tmpDBCursor = tmpDatabase.query("META", new String[] {"VALUEs"}, "", null, null, null, "VALUE");
+		        tmpDBCursor.moveToFirst();
+		        if (!tmpDBCursor.isAfterLast()) {
+					do {
+						
+						String id = tmpDBCursor.getString(0);
+						Log.i(packageName, "VERSION: " + id);
+						
+					} while (tmpDBCursor.moveToNext());
+				}
+	        } catch (Exception e) {
+	        	
+	        }
+	        
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		
 		openDataBase();
     }
 

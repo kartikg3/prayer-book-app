@@ -2,6 +2,9 @@ package com.kartikhariharan.prayerbookapp;
 
 import java.util.List;
 
+import com.kartikhariharan.prayerbookapp.activities.HomeActivity;
+import com.kartikhariharan.prayerbookapp.adapters.PrayerListAdapter;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
@@ -32,12 +35,12 @@ public class FavoriteOnClickListener implements OnClickListener {
 			// Update in database
 			HomeActivity homeActivity = (HomeActivity) context;
 			ContentValues values = new ContentValues();
-			values.put(HomeActivity.IS_FAVORITE, 0);			
+			values.put(HomeActivity.getIsFavorite(), 0);			
 			
-			homeActivity.database.update(HomeActivity.PRAYER_TABLE_NAME,
+			homeActivity.getDatabase().update(HomeActivity.getPrayerTableName(),
 					values,
 					String.format("%s=%d",
-							HomeActivity.PRAYER_ID,
+							HomeActivity.getPrayerId(),
 							prayer.getId()),
 					null);
 			
@@ -65,13 +68,13 @@ public class FavoriteOnClickListener implements OnClickListener {
 			// Update in database
 			HomeActivity homeActivity = (HomeActivity) context;
 			ContentValues values = new ContentValues();
-			values.put(HomeActivity.IS_FAVORITE, 1);
+			values.put(HomeActivity.getIsFavorite(), 1);
 			
 			
-			homeActivity.database.update(HomeActivity.PRAYER_TABLE_NAME,
+			homeActivity.getDatabase().update(HomeActivity.getPrayerTableName(),
 					values,
 					String.format("%s=%d",
-							HomeActivity.PRAYER_ID,
+							HomeActivity.getPrayerId(),
 							prayer.getId()),
 					null);
 			

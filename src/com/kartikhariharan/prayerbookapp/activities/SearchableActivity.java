@@ -1,7 +1,16 @@
-package com.kartikhariharan.prayerbookapp;
+package com.kartikhariharan.prayerbookapp.activities;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.kartikhariharan.prayerbookapp.DataBaseHelper;
+import com.kartikhariharan.prayerbookapp.Prayer;
+import com.kartikhariharan.prayerbookapp.R;
+import com.kartikhariharan.prayerbookapp.R.id;
+import com.kartikhariharan.prayerbookapp.R.layout;
+import com.kartikhariharan.prayerbookapp.R.menu;
+import com.kartikhariharan.prayerbookapp.R.string;
+import com.kartikhariharan.prayerbookapp.adapters.PrayerSearchAdapter;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -36,25 +45,25 @@ static final String DB_NAME = "prayers.db";
 	static final String CATEGORY_ID = "CATEGORY_id";
 	static final String CATEGORY_TITLE = "TITLE";
 	
-	static final String PRAYER_TABLE_NAME = "PRAYER";
-	static final String PRAYER_ID = "PRAYER_id";
+	private static final String PRAYER_TABLE_NAME = "PRAYER";
+	private static final String PRAYER_ID = "PRAYER_id";
 	static final String PRAYER_TITLE = "TITLE";
 	static final String PRAYER_CONTENT = "CONTENT";
-	static final String IS_FAVORITE = "IS_FAVORITE";
+	private static final String IS_FAVORITE = "IS_FAVORITE";
 	
 	static final String CATEGORY_PRAYER_MAP_TABLE_NAME = "CATEGORY_PRAYER_MAP";
 	static final String CATEGORY_MAP_ID = "CATEGORY_ID";
 	static final String PRAYER_MAP_ID = "PRAYER_ID";
 	
-	SQLiteDatabase database;
+	private SQLiteDatabase database;
 	List<Prayer> prayerList;
 	
-	ListView lvSearchResults;
+	private ListView lvSearchResults;
 	
 	SearchView searchView;
     SearchManager searchManager;
     
-    String query;
+    private String query;
     
     TextView tvResultsLabel;
     TextView tvResultsCount;
@@ -68,6 +77,8 @@ static final String DB_NAME = "prayers.db";
 		
 		super.onCreate(savedInstanceState);
 		
+		Log.d("DEBUG", "Entered search");
+		
 		setContentView(R.layout.search_results_listview);
 		
 		tvResultsLabel = (TextView) findViewById(R.id.tvResultsLabel);
@@ -80,14 +91,14 @@ static final String DB_NAME = "prayers.db";
 	    
 	    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_TITLE|ActionBar.DISPLAY_SHOW_HOME|ActionBar.DISPLAY_HOME_AS_UP);
 	    
-	    lvSearchResults = (ListView) findViewById(R.id.lvSearchResults);
+	    setLvSearchResults((ListView) findViewById(R.id.lvSearchResults));
         
 	    DataBaseHelper dbOpenHelper = new DataBaseHelper(this, SearchableActivity.DB_NAME);
-        database = dbOpenHelper.openDataBase();
+        setDatabase(dbOpenHelper.openDataBase());
         
         if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
 	    	
-		    query = getIntent().getStringExtra(SearchManager.QUERY);
+		    setQuery(getIntent().getStringExtra(SearchManager.QUERY));
 		    
 	    }
         
@@ -108,8 +119,8 @@ static final String DB_NAME = "prayers.db";
 	    searchView.setIconifiedByDefault(false);
 	    searchView.setQueryHint(getResources().getText(R.string.search_hint));
 	    	    	    
-	    if (query != null) {
-	    	searchView.setQuery(query, false);
+	    if (getQuery() != null) {
+	    	searchView.setQuery(getQuery(), false);
 	    }
 	    
 	    int searchSrcTextId = getResources().getIdentifier("android:id/search_src_text", null, null);  
@@ -128,9 +139,9 @@ static final String DB_NAME = "prayers.db";
 	private void handleIntent(Intent intent) {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 	    	
-		    this.query = intent.getStringExtra(SearchManager.QUERY);	    
+		    this.setQuery(intent.getStringExtra(SearchManager.QUERY));	    
 		    
-		    doSearch(this.query);
+		    doSearch(this.getQuery());
 		    
 	    }
 	}
@@ -141,12 +152,12 @@ static final String DB_NAME = "prayers.db";
 		
 		Cursor prayerCursor;	
 		
-		prayerCursor = database.query(SearchableActivity.PRAYER_TABLE_NAME,
-				new String[] {SearchableActivity.PRAYER_ID, SearchableActivity.PRAYER_TITLE, SearchableActivity.PRAYER_CONTENT, SearchableActivity.IS_FAVORITE},
+		prayerCursor = getDatabase().query(SearchableActivity.getPrayerTableName(),
+				new String[] {SearchableActivity.getPrayerId(), SearchableActivity.PRAYER_TITLE, SearchableActivity.PRAYER_CONTENT, SearchableActivity.getIsFavorite()},
 				String.format("%s LIKE %s OR %s LIKE %s",
 						SearchableActivity.PRAYER_CONTENT, "'%" + query + "%'",
 						SearchableActivity.PRAYER_TITLE, "'%" + query + "%'"),
-				null, null, null, SearchableActivity.PRAYER_ID);
+				null, null, null, SearchableActivity.getPrayerId());
 		
 		tvResultsCount.setText(String.format("%d", prayerCursor.getCount()));
 		
@@ -165,7 +176,7 @@ static final String DB_NAME = "prayers.db";
 		}
 		
 		ArrayAdapter<Prayer> adapter = new PrayerSearchAdapter(this, prayerList);
-		lvSearchResults.setAdapter(adapter);
+		getLvSearchResults().setAdapter(adapter);
 		
 	}
 	
@@ -175,7 +186,7 @@ static final String DB_NAME = "prayers.db";
 		int lastExpandedPosition = savedInstanceState.getInt("LAST_EXPANDED_GROUP");
 		if (lastExpandedPosition != -1) {
 			
-			((PrayerSearchAdapter) lvSearchResults.getAdapter()).expandPrayer(lastExpandedPosition);
+			((PrayerSearchAdapter) getLvSearchResults().getAdapter()).expandPrayer(lastExpandedPosition);
 			
 		}
 	}
@@ -184,7 +195,7 @@ static final String DB_NAME = "prayers.db";
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("LAST_EXPANDED_GROUP", ((PrayerSearchAdapter) lvSearchResults.getAdapter()).getLastExpandedPosition());
+		outState.putInt("LAST_EXPANDED_GROUP", ((PrayerSearchAdapter) getLvSearchResults().getAdapter()).getLastExpandedPosition());
 	}
 
 	@Override
@@ -193,7 +204,7 @@ static final String DB_NAME = "prayers.db";
 		switch (item.getItemId()) {
 		
 		case R.id.menu_item_about:
-			Intent aboutIntent = new Intent(this, About.class);
+			Intent aboutIntent = new Intent(this, AboutActivity.class);
 			startActivity(aboutIntent);
 			break;
 		
@@ -204,6 +215,42 @@ static final String DB_NAME = "prayers.db";
 		
 		return super.onOptionsItemSelected(item);
 		
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	public ListView getLvSearchResults() {
+		return lvSearchResults;
+	}
+
+	public void setLvSearchResults(ListView lvSearchResults) {
+		this.lvSearchResults = lvSearchResults;
+	}
+
+	public SQLiteDatabase getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(SQLiteDatabase database) {
+		this.database = database;
+	}
+
+	public static String getPrayerTableName() {
+		return PRAYER_TABLE_NAME;
+	}
+
+	public static String getPrayerId() {
+		return PRAYER_ID;
+	}
+
+	public static String getIsFavorite() {
+		return IS_FAVORITE;
 	}
 	
 }

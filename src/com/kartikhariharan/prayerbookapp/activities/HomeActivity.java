@@ -1,4 +1,4 @@
-package com.kartikhariharan.prayerbookapp;
+package com.kartikhariharan.prayerbookapp.activities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +26,15 @@ import android.widget.ListAdapter;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.kartikhariharan.prayerbookapp.PrayerListAdapter;
+import com.kartikhariharan.prayerbookapp.Category;
+import com.kartikhariharan.prayerbookapp.DataBaseHelper;
+import com.kartikhariharan.prayerbookapp.Prayer;
+import com.kartikhariharan.prayerbookapp.R;
+import com.kartikhariharan.prayerbookapp.R.id;
+import com.kartikhariharan.prayerbookapp.R.layout;
+import com.kartikhariharan.prayerbookapp.R.menu;
+import com.kartikhariharan.prayerbookapp.R.string;
+import com.kartikhariharan.prayerbookapp.adapters.PrayerListAdapter;
 
 public class HomeActivity extends Activity {
 	
@@ -39,17 +47,17 @@ public class HomeActivity extends Activity {
 	static final String CATEGORY_ID = "CATEGORY_id";
 	static final String CATEGORY_TITLE = "TITLE";
 	
-	static final String PRAYER_TABLE_NAME = "PRAYER";
-	static final String PRAYER_ID = "PRAYER_id";
+	private static final String PRAYER_TABLE_NAME = "PRAYER";
+	private static final String PRAYER_ID = "PRAYER_id";
 	static final String PRAYER_TITLE = "TITLE";
 	static final String PRAYER_CONTENT = "CONTENT";
-	static final String IS_FAVORITE = "IS_FAVORITE";
+	private static final String IS_FAVORITE = "IS_FAVORITE";
 	
 	static final String CATEGORY_PRAYER_MAP_TABLE_NAME = "CATEGORY_PRAYER_MAP";
 	static final String CATEGORY_MAP_ID = "CATEGORY_ID";
 	static final String PRAYER_MAP_ID = "PRAYER_ID";
 	
-	SQLiteDatabase database;
+	private SQLiteDatabase database;
 	
 	List<List<Prayer>> prayerList;
 	List<Category> categoryList;
@@ -71,7 +79,7 @@ public class HomeActivity extends Activity {
 		
 		//Our key helper
         DataBaseHelper dbOpenHelper = new DataBaseHelper(this, DB_NAME);
-        database = dbOpenHelper.openDataBase();
+        setDatabase(dbOpenHelper.openDataBase());
         //That’s it, the database is open!
 		
 		prayerList = new ArrayList<List<Prayer>>();
@@ -154,7 +162,7 @@ public class HomeActivity extends Activity {
 		switch (item.getItemId()) {
 		
 		case R.id.menu_item_about:
-			Intent aboutIntent = new Intent(this, About.class);
+			Intent aboutIntent = new Intent(this, AboutActivity.class);
 			startActivity(aboutIntent);
 			break;
 		
@@ -170,7 +178,7 @@ public class HomeActivity extends Activity {
 	public List<Category> populateCategoryList (List<Category> categoryList) {
 		// Method to populate the category list from the data source
 		
-		Cursor categoryCursor = database.query(CATEGORY_TABLE_NAME,
+		Cursor categoryCursor = getDatabase().query(CATEGORY_TABLE_NAME,
 				new String[] {CATEGORY_ID, CATEGORY_TITLE},
 				null, null, null, null, CATEGORY_ID);
 		
@@ -197,7 +205,7 @@ public class HomeActivity extends Activity {
 		
 		Cursor prayerCursor;	
 		
-		Cursor categoryCursor = database.query(CATEGORY_TABLE_NAME,
+		Cursor categoryCursor = getDatabase().query(CATEGORY_TABLE_NAME,
 				new String[] {CATEGORY_ID, CATEGORY_TITLE},
 				null, null, null, null, CATEGORY_ID);
 		
@@ -211,7 +219,7 @@ public class HomeActivity extends Activity {
 			do {
 					int category_id = categoryCursor.getInt(0);
 					
-					mapCursor = database.query(CATEGORY_PRAYER_MAP_TABLE_NAME,
+					mapCursor = getDatabase().query(CATEGORY_PRAYER_MAP_TABLE_NAME,
 							new String[] {CATEGORY_MAP_ID, PRAYER_MAP_ID},
 							"CATEGORY_ID="+category_id, null, null, null, CATEGORY_MAP_ID);
 				
@@ -220,9 +228,9 @@ public class HomeActivity extends Activity {
 						
 						do {
 							
-							prayerCursor = database.query(PRAYER_TABLE_NAME,
-										new String[] {PRAYER_ID, PRAYER_TITLE, PRAYER_CONTENT, IS_FAVORITE},
-										"PRAYER_id="+mapCursor.getInt(1), null, null, null, PRAYER_ID);	
+							prayerCursor = getDatabase().query(getPrayerTableName(),
+										new String[] {getPrayerId(), PRAYER_TITLE, PRAYER_CONTENT, getIsFavorite()},
+										"PRAYER_id="+mapCursor.getInt(1), null, null, null, getPrayerId());	
 							
 							
 							prayerCursor.moveToFirst();
@@ -266,9 +274,9 @@ public class HomeActivity extends Activity {
 		
 		prayerList.get(i).clear();
 		
-		Cursor prayerCursor = database.query(PRAYER_TABLE_NAME,
-						new String[] {PRAYER_ID, PRAYER_TITLE, PRAYER_CONTENT, IS_FAVORITE},
-						"IS_FAVORITE="+1, null, null, null, PRAYER_ID);
+		Cursor prayerCursor = getDatabase().query(getPrayerTableName(),
+						new String[] {getPrayerId(), PRAYER_TITLE, PRAYER_CONTENT, getIsFavorite()},
+						"IS_FAVORITE="+1, null, null, null, getPrayerId());
 	
 				
 		prayerCursor.moveToFirst();
@@ -319,8 +327,6 @@ public class HomeActivity extends Activity {
 		int lastExpandedGroup = ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedGroupPosition();
 		int[] lastExpandedPrayer = ((PrayerListAdapter) exlvHomeListView.getExpandableListAdapter()).getLastExpandedPrayer();
 		
-		Log.d("DEBUG", "frm restart: " + lastExpandedPrayer[0] + " " + lastExpandedPrayer[1]);
-		
 		prayerList = new ArrayList<List<Prayer>>();
 		categoryList = new ArrayList<Category>();
 
@@ -352,6 +358,26 @@ public class HomeActivity extends Activity {
 			
 		}
 		
+	}
+
+	public SQLiteDatabase getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(SQLiteDatabase database) {
+		this.database = database;
+	}
+
+	public static String getIsFavorite() {
+		return IS_FAVORITE;
+	}
+
+	public static String getPrayerTableName() {
+		return PRAYER_TABLE_NAME;
+	}
+
+	public static String getPrayerId() {
+		return PRAYER_ID;
 	}
 
 }
