@@ -86,7 +86,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	        
 	        try {
 	        	
-	        	Cursor tmpDBCursor = tmpDatabase.query("META", new String[] {"VALUEs"}, "", null, null, null, "VALUE");
+	        	Cursor tmpDBCursor = tmpDatabase.query("META", new String[] {"VALUE"}, "", null, null, null, "VALUE");
 		        tmpDBCursor.moveToFirst();
 		        if (!tmpDBCursor.isAfterLast()) {
 					do {
