@@ -4,14 +4,24 @@
     <string name="action_settings">Settings</string>
     <string name="home_title_line01">The Infant Jesus</string>
     <string name="home_title_line02">\u00A0Golden Book of Prayers</string>
+    <string name="rate_button">Rate this app</string>
+    <string name="share_button">Share this app</string>
     <string name="search_label">Search</string>
     <string name="search_hint">e.g. Job, family etc.</string>
     <string name="about_desc">\n
+A simple and easy to use prayer book app that has a collection of basic catholic prayers for your daily use. There’s a prayer for everyone in every situation. There’s a prayer that will connect to your need.\n
+\n
+We hope this prayer book app guides you through your daily life and brings you more closer to God.\n
+Thank you and God bless.\n
+\n
 Concept: Merwyn Xavier, Kartik Hariharan\n
 Development: Kartik Hariharan\n
 Design: Merwyn Xavier\n
 \n
-All rights reserved. 2014.
+All rights reserved. 2014.\n
+\n
+If you like this app, please leave us a review and rating. We’re open to suggestions so don’t hesitate to send us an e-mail if you want to fix or add prayers in our database.\n
+\n
 </string>
 
 </resources>

@@ -8,12 +8,14 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -166,6 +168,24 @@ public class HomeActivity extends Activity {
 			startActivity(aboutIntent);
 			break;
 		
+		case R.id.menu_item_rate:
+			Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
+			Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+			try {
+			  startActivity(goToMarket);
+			} catch (ActivityNotFoundException e) {
+			  startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName())));
+			}
+			
+		case R.id.menu_item_share:
+			String appUri = "http://play.google.com/store/apps/details?id=" + this.getPackageName();
+			String textToShare = "Check out the Prayer Book App at " + appUri + "! I use it and I love it.";
+			Intent sendIntent = new Intent();
+			sendIntent.setAction(Intent.ACTION_SEND);
+			sendIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
+			sendIntent.setType("text/plain");
+			this.startActivity(Intent.createChooser(sendIntent, "Share this app..."));
+			
 		default:
 			return super.onOptionsItemSelected(item);
 		

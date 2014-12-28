@@ -4,61 +4,90 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
      >
-    
-    <LinearLayout
-        android:layout_width="wrap_content"
+     
+    <ScrollView
+        android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:layout_centerHorizontal="true"
-        >
+	    android:layout_margin="10dp">
     
-		<LinearLayout
-	        android:layout_width="match_parent"
+	    <LinearLayout
+	        android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:orientation="horizontal"
+		    android:orientation="vertical"
+		    android:layout_centerHorizontal="true"
 	        >
 	    
-		    <TextView
-		        android:id="@+id/tvTitleLine01"
+			<LinearLayout
 		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:textColor="#222222"
-		        android:layout_marginTop="15dp"
-		        android:layout_marginLeft="25dp"
-		        android:typeface="serif"
-		        android:text="@string/home_title_line01" />
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal"
+		        >
 		    
-	  	</LinearLayout>
-		    
-	    <LinearLayout
-	        android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="horizontal"
-	        >
-		    
-		    <TextView
-		        android:id="@+id/tvTitleLine02"
+			    <TextView
+			        android:id="@+id/tvTitleLine01"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textColor="#222222"
+			        android:layout_marginTop="15dp"
+			        android:layout_marginLeft="25dp"
+			        android:typeface="serif"
+			        android:text="@string/home_title_line01" />
+			    
+		  	</LinearLayout>
+			    
+		    <LinearLayout
 		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:textColor="#f4c91c"
-		        android:textSize="48sp"
-		        android:layout_marginTop="5dp"
-		        android:layout_marginLeft="20dp"
-		        android:layout_marginBottom="25dp"
-		        android:text="@string/home_title_line02" />
-		
-		</LinearLayout>
-	
-    </LinearLayout>
+			    android:layout_height="wrap_content"
+			    android:orientation="horizontal"
+		        >
+			    
+			    <TextView
+			        android:id="@+id/tvTitleLine02"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:textColor="#f4c91c"
+			        android:textSize="48sp"
+			        android:layout_marginTop="5dp"
+			        android:layout_marginLeft="20dp"
+			        android:layout_marginBottom="5dp"
+			        android:text="@string/home_title_line02" />
+			
+			</LinearLayout>	    	
+			    
+			    <TextView
+			        android:layout_centerInParent="true"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:id="@+id/tvAboutDesc"
+			        android:text="@string/about_desc"
+			        android:textColor="#FF333355" />	
+			        
+		    	<LinearLayout
+		    	    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:orientation="horizontal"
+				    android:layout_centerHorizontal="true">
+		    	    
+		    	    <Button
+				        android:id="@+id/btnAboutRate"
+					    android:layout_height="wrap_content"
+					    android:layout_width="wrap_content"
+					    android:text="@string/rate_button"
+					    android:onClick="rateApp"
+					     />
+		    	    
+			    	<Button
+				        android:id="@+id/btnAboutShare"
+					    android:layout_height="wrap_content"
+					    android:layout_width="wrap_content"
+					    android:text="@string/share_button"
+   					    android:onClick="shareApp"
+					     />
+			    	
+		    	</LinearLayout>		    
+			    
+	    </LinearLayout>	    
     
-    
-    
-    <TextView
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvAboutDesc"
-        android:text="@string/about_desc"
-        android:textColor="#FF333355" />
+    </ScrollView>   
 
 </RelativeLayout>
